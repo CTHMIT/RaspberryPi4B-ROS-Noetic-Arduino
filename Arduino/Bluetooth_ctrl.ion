@@ -1,0 +1,200 @@
+#include <SoftwareSerial.h>
+char command;
+char val;
+
+SoftwareSerial BT(2,3);
+// left motor control setting
+const byte LEFT1 = 9;
+const byte LEFT2 = 8;
+const byte LEFT_PWM = 10;
+
+// right motor control setting
+const byte RIGHT1 = 7;
+const byte RIGHT2 = 6;
+const byte RIGHT_PWM = 5;
+
+byte LEFTmotorSpeed = 108;
+byte RIGHTmotorSpeed = 155;
+byte MAX_SPEED = 255;
+byte MIN_SPEED = 0;
+byte ADJUST = 20;
+
+
+void setup() {
+  // Set up the motor pins as output
+  pinMode(LEFT1, OUTPUT);
+  pinMode(LEFT2, OUTPUT);
+  pinMode(LEFT_PWM, OUTPUT);
+  pinMode(RIGHT1, OUTPUT);
+  pinMode(RIGHT2, OUTPUT);
+  pinMode(RIGHT_PWM, OUTPUT);
+
+  // Set up the serial communication
+  Serial.begin(9600);
+
+  // Set up the Bluetooth module
+  pinMode(3, OUTPUT);
+  BT.begin(9600);
+  Serial.println("BT is ready!");
+}
+
+// forward
+void forward() {
+   
+  // left wheel
+  digitalWrite(LEFT1, HIGH);
+  digitalWrite(LEFT2, LOW);
+  analogWrite(LEFT_PWM, LEFTmotorSpeed);
+
+  // right wheel
+  digitalWrite(RIGHT1, HIGH);
+  digitalWrite(RIGHT2, LOW);
+  analogWrite(RIGHT_PWM, RIGHTmotorSpeed);
+}
+// backward
+void backward() {
+   
+  // left wheel
+  digitalWrite(LEFT1, LOW);
+  digitalWrite(LEFT2, HIGH);
+  analogWrite(LEFT_PWM, LEFTmotorSpeed);
+
+  // right wheel
+  digitalWrite(RIGHT1, LOW);
+  digitalWrite(RIGHT2, HIGH);
+  analogWrite(RIGHT_PWM, RIGHTmotorSpeed);
+
+}
+void turnleft() {
+  
+  // left wheel
+  analogWrite(LEFT_PWM, 30);
+
+  // right wheel
+  digitalWrite(RIGHT1, HIGH);
+  digitalWrite(RIGHT2, LOW);
+  analogWrite(RIGHT_PWM, RIGHTmotorSpeed);
+
+  
+}
+void turnright() {
+  
+  // left wheel
+  digitalWrite(LEFT1, HIGH);
+  digitalWrite(LEFT2, LOW);
+  analogWrite(LEFT_PWM, LEFTmotorSpeed);
+
+  // right wheel
+  analogWrite(RIGHT_PWM, 30);
+}
+void stopmotor() {
+  
+  // left wheel
+  analogWrite(LEFT_PWM, 0);
+
+  // right wheel
+  analogWrite(RIGHT_PWM, 0);
+}
+
+void loop() {
+  
+  // Check if a command is received from the Bluetooth module
+  if (Serial.available()){
+    val = Serial.read();
+    Serial.print(val);
+
+    // Check the command type and adjust the motor speeds accordingly
+    switch (val) {
+      case 'F':
+      case 'f': // Move forward
+        forward();
+        break;
+      case 'B':
+      case 'b': // Move backward
+        backward();
+        break;
+      case 'L':
+      case 'l': // Turn left
+        turnleft();
+        break;
+      case 'R':
+      case 'r': // Turn right
+        turnright();
+        break;
+      case 'A':
+      case 'a': // Increase speed
+        if (RIGHTmotorSpeed+ADJUST < MAX_SPEED && LEFTmotorSpeed+ADJUST < MAX_SPEED) {
+          RIGHTmotorSpeed += ADJUST;  
+          LEFTmotorSpeed += ADJUST;
+        } else {
+          RIGHTmotorSpeed = RIGHTmotorSpeed;
+          LEFTmotorSpeed = LEFTmotorSpeed;
+        }
+        break;
+      case 'M':
+      case 'm': // Decrease speed
+        if (RIGHTmotorSpeed-ADJUST > MIN_SPEED && LEFTmotorSpeed-ADJUST > MIN_SPEED) {
+          RIGHTmotorSpeed -= ADJUST;
+          LEFTmotorSpeed -= ADJUST;
+        }
+        break;
+      case 'S' | 's': // Stop
+        stopmotor();
+        break;
+    }
+    Serial.print("\t\n");
+    Serial.print(" Rightspeed: ");
+    Serial.print(RIGHTmotorSpeed);
+    Serial.print(" Leftspeed: ");
+    Serial.print(LEFTmotorSpeed);
+    Serial.print("\t\n");
+  }
+  if (BT.available()) {
+    command = BT.read();
+    Serial.print(command);
+
+
+    // Check the command type and adjust the motor speeds accordingly
+    switch (command) {
+      case 'F':
+      case 'f': // Move forward
+        forward();
+        break;
+      case 'B':
+      case 'b': // Move backward
+        backward();
+        break;
+      case 'L':
+      case 'l': // Turn left
+        turnleft();
+        break;
+      case 'R':
+      case 'r': // Turn right
+        turnright();
+        break;
+      case 'A':
+      case 'a': // Increase speed
+        if (RIGHTmotorSpeed+ADJUST < MAX_SPEED && LEFTmotorSpeed+ADJUST < MAX_SPEED) {
+          RIGHTmotorSpeed += ADJUST;  
+          LEFTmotorSpeed += ADJUST;
+        }
+        break;
+      case 'M':
+      case 'm': // Decrease speed
+        if (RIGHTmotorSpeed-ADJUST > MIN_SPEED && LEFTmotorSpeed-ADJUST > MIN_SPEED) {
+          RIGHTmotorSpeed -= ADJUST;
+          LEFTmotorSpeed -= ADJUST;
+        }
+        break;
+      case 'S' | 's': // Stop
+        stopmotor();
+        break;
+    }
+    Serial.print("\t\n");
+    Serial.print(" Rightspeed: ");
+    Serial.print(RIGHTmotorSpeed);
+    Serial.print(" Leftspeed: ");
+    Serial.print(LEFTmotorSpeed);
+    Serial.print("\t\n");
+  }
+}
