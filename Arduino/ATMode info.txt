@@ -1,0 +1,15 @@
+#　AT mode 
+AT+NAME=ee715
+AT+PSWD=ee715
+AT+UART? # +UART:9600,0,0
+AT+CMODE=0 # setup link mode
+AT+ROLE=0 # Reciver
+AT+ROLE=1 # Transmitter
+AT+ADDR? # +ADDR:98d3:31:fd5c26
+AT+BIND? # AT+BIND=98d3:31:fd5c26 set connect
+AT+INQ # search BT At+inq\r\n
+AT+INQC #　Canel search BT
+AT+RESET # Reboot 
+AT+ORGL # Factory reset
+
+ERROR:0 AT command fault
