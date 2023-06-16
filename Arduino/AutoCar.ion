@@ -1,0 +1,440 @@
+#include <SoftwareSerial.h>
+char command;
+char val;
+
+SoftwareSerial BT(2,3);
+// left motor control setting
+const byte LEFT1 = 9;
+const byte LEFT2 = 8;
+const byte LEFT_PWM = 10;
+
+// right motor control setting
+const byte RIGHT1 = 7;
+const byte RIGHT2 = 6;
+const byte RIGHT_PWM = 5;
+
+byte LEFTmotorSpeed = 67;
+byte RIGHTmotorSpeed = 90;
+byte MAX_SPEED = 255;
+byte MIN_SPEED = 66;
+byte ADJUST = 50;
+byte RIGHTSpeed = 0;
+byte LEFTSpeed = 0;
+
+
+const int AR = 4;
+const int AL = 11;
+
+
+void setup() {
+  // Set up the motor pins as output
+  pinMode(LEFT1, OUTPUT);
+  pinMode(LEFT2, OUTPUT);
+  pinMode(LEFT_PWM, OUTPUT);
+  pinMode(RIGHT1, OUTPUT);
+  pinMode(RIGHT2, OUTPUT);
+  pinMode(RIGHT_PWM, OUTPUT);
+  pinMode(AR, INPUT);
+  pinMode(AL, INPUT);
+
+  // Set up the serial communication
+  Serial.begin(9600);
+
+  // Set up the Bluetooth module
+  pinMode(3, OUTPUT);
+  BT.begin(9600);
+  Serial.println("BT is ready!");
+}
+
+// forward
+void forward() {
+   
+  // left wheel
+  digitalWrite(LEFT1, HIGH);
+  digitalWrite(LEFT2, LOW);
+  analogWrite(LEFT_PWM, LEFTSpeed);
+
+  // right wheel
+  digitalWrite(RIGHT1, HIGH);
+  digitalWrite(RIGHT2, LOW);
+  analogWrite(RIGHT_PWM, RIGHTSpeed);
+}
+void rotaleft() {
+   
+  // left wheel
+  digitalWrite(LEFT1, LOW);
+  digitalWrite(LEFT2, HIGH);
+  analogWrite(LEFT_PWM, LEFTSpeed);
+
+  // right wheel
+  digitalWrite(RIGHT1, HIGH);
+  digitalWrite(RIGHT2, LOW);
+  analogWrite(RIGHT_PWM, MIN_SPEED);
+}
+void rotaright() {
+   
+  // left wheel
+  digitalWrite(LEFT1, HIGH);
+  digitalWrite(LEFT2, LOW);
+  analogWrite(LEFT_PWM, MIN_SPEED);
+
+  // right wheel
+  digitalWrite(RIGHT1, LOW);
+  digitalWrite(RIGHT2, HIGH);
+  analogWrite(RIGHT_PWM, RIGHTSpeed);
+}
+// backward
+void backward() {
+   
+  // left wheel
+  digitalWrite(LEFT1, LOW);
+  digitalWrite(LEFT2, HIGH);
+  analogWrite(LEFT_PWM, LEFTSpeed);
+
+  // right wheel
+  digitalWrite(RIGHT1, LOW);
+  digitalWrite(RIGHT2, HIGH);
+  analogWrite(RIGHT_PWM, RIGHTSpeed);
+
+}
+void backwardleft() {
+   
+  // left wheel
+  digitalWrite(LEFT1, LOW);
+  digitalWrite(LEFT2, HIGH);
+  analogWrite(LEFT_PWM, MIN_SPEED);
+
+  // right wheel
+  digitalWrite(RIGHT1, LOW);
+  digitalWrite(RIGHT2, HIGH);
+  analogWrite(RIGHT_PWM, RIGHTSpeed);
+
+}
+void backwardright() {
+   
+  // left wheel
+  digitalWrite(LEFT1, LOW);
+  digitalWrite(LEFT2, HIGH);
+  analogWrite(LEFT_PWM, LEFTSpeed);
+
+  // right wheel
+  digitalWrite(RIGHT1, LOW);
+  digitalWrite(RIGHT2, HIGH);
+  analogWrite(RIGHT_PWM, MIN_SPEED);
+
+}
+void turnleft() {
+  
+  // left wheel
+  analogWrite(LEFT_PWM, 0);
+
+  // right wheel
+  digitalWrite(RIGHT1, HIGH);
+  digitalWrite(RIGHT2, LOW);
+  analogWrite(RIGHT_PWM, RIGHTSpeed);
+
+  
+}
+void turnright() {
+  
+  // left wheel
+  digitalWrite(LEFT1, HIGH);
+  digitalWrite(LEFT2, LOW);
+  analogWrite(LEFT_PWM, LEFTSpeed);
+
+  // right wheel
+  analogWrite(RIGHT_PWM, 0);
+}
+void stopmotor() {
+  
+  // left wheel
+  analogWrite(LEFT_PWM, 0);
+
+  // right wheel
+  analogWrite(RIGHT_PWM, 0);
+}
+
+
+unsigned long lastTime = 0;
+const int interval = 1000;
+bool autotraceEnabled = false;
+float Kp = 1.0;
+float Ki = 0.0;
+float Kd = 0.0;
+float error, last_error = 0, error_sum = 0;
+float dt = 0.1; 
+int RIR_Default = 0;
+int LIR_Default = 0;
+void loop() {
+  if (RIGHTSpeed == 0 ) {
+    RIGHTSpeed = RIGHTmotorSpeed;
+  }
+  if (LEFTSpeed == 0 ) {
+    LEFTSpeed = LEFTmotorSpeed;
+  }
+  int rightIR = digitalRead(AR);
+  int leftIR = digitalRead(AL);
+ 
+
+  if (autotraceEnabled) { 
+      // PID controller for left motor
+      // error = LIR_Default - leftIR;
+      // error_sum += error * dt;
+      // float d_error = (error - last_error) / dt;
+      // float output = Kp * error + Ki * error_sum + Kd * d_error;
+      // last_error = error;
+      // LEFTSpeed = constrain(LEFTmotorSpeed - output, MIN_SPEED, MAX_SPEED);
+
+      // // PID controller for right motor
+      // error = RIR_Default - rightIR;
+      // error_sum += error * dt;
+      // d_error = (error - last_error) / dt;
+      // output = Kp * error + Ki * error_sum + Kd * d_error;
+      // last_error = error;
+      // RIGHTSpeed = constrain(RIGHTmotorSpeed + output, MIN_SPEED, MAX_SPEED);
+      // Adjust the motor speeds based on the IR sensor values
+      
+      if (RIR_Default == 0 && LIR_Default == 0 && rightIR == 1 && leftIR == 1){
+        LIR_Default = 1;
+        RIR_Default = 1;
+        backward();
+      } 
+      if (RIR_Default == 1 && LIR_Default == 1 && rightIR == 0 && leftIR == 1){
+        LIR_Default = 0;
+        RIR_Default = 0;
+        turnleft();
+      } 
+      if (RIR_Default == 1 && LIR_Default == 1 && rightIR == 1 && leftIR == 0){
+        LIR_Default = 0;
+        RIR_Default = 0;
+        turnright();
+      } 
+
+      if (RIR_Default == 0  && LIR_Default == 1 && rightIR == 1 && leftIR == 1) {
+          backwardright();
+          RIR_Default = 1;
+          LIR_Default = 1;
+          delay(80);
+          turnright();
+          delay(80);
+          turnleft();
+      } 
+      if (RIR_Default == 1 && LIR_Default == 0 && rightIR == 1 && leftIR == 1 ) {
+          backwardleft();
+          RIR_Default = 1;
+          LIR_Default = 1;
+          delay(80);
+          turnright();
+          delay(80);
+          turnright();
+      } 
+      if (RIR_Default == 0 && LIR_Default == 0 && rightIR == 0 && leftIR == 1 ) {
+        RIR_Default = 0;
+        LIR_Default = 1;
+        rotaleft();
+      }
+
+      if (RIR_Default == 0 && LIR_Default == 0  && rightIR == 1 && leftIR == 0) {
+        RIR_Default = 1;
+        LIR_Default = 0; 
+        rotaright();
+      } 
+      if (rightIR == 0 && leftIR == 0) {    
+        RIR_Default = 0;
+        LIR_Default = 0; 
+        forward();
+      }
+      delay(20);
+    }
+  // Check if a command is received from the Serial module
+  if (Serial.available()){
+    // Check the command type and adjust the motor speeds accordingly
+    val = Serial.read();
+    
+    switch (val) {// Move auto
+      case 'T':
+      case 't':
+        autotraceEnabled = true;
+        break;
+      case 'F':
+        forward();
+        delay(500);
+        stopmotor();
+        break;
+      case 'f': // Move forward
+        forward();
+        delay(500);
+        stopmotor();
+        break;
+      case 'B':
+        backward();
+        delay(500);
+        stopmotor();
+        break;
+      case 'b': // Move backward
+        backward();
+        delay(500);
+        stopmotor();
+        break;
+      case 'L':
+        turnleft();
+        delay(500);
+        stopmotor();
+        break;
+      case 'l': // Turn left
+        turnleft();
+        delay(500);
+        stopmotor();
+        break;
+      case 'R':
+        turnright();
+        delay(500);
+        stopmotor();
+        break;
+      case 'r': // Turn right
+        turnright();
+        delay(500);
+        stopmotor();
+        break;
+      case 'A':
+      case 'a': // Increase speed
+        if (RIGHTSpeed+ADJUST <= MAX_SPEED && LEFTSpeed+ADJUST <= MAX_SPEED) {
+          RIGHTSpeed += ADJUST;  
+          LEFTSpeed += ADJUST;
+          analogWrite(LEFT_PWM, LEFTSpeed);
+          analogWrite(RIGHT_PWM, RIGHTSpeed);
+        } else {
+          RIGHTSpeed = RIGHTSpeed;
+          LEFTSpeed = LEFTSpeed;
+          analogWrite(LEFT_PWM, LEFTSpeed);
+          analogWrite(RIGHT_PWM, RIGHTSpeed);
+        }
+        break;
+      case 'M':
+      case 'm': // Decrease speed
+        if (RIGHTSpeed-ADJUST >= MIN_SPEED && LEFTSpeed-ADJUST >= MIN_SPEED) {
+          RIGHTSpeed -= ADJUST;
+          LEFTSpeed -= ADJUST;
+          analogWrite(LEFT_PWM, LEFTSpeed);
+          analogWrite(RIGHT_PWM, RIGHTSpeed);
+        } else {
+          RIGHTSpeed = RIGHTSpeed;
+          LEFTSpeed = LEFTSpeed;
+          analogWrite(LEFT_PWM, LEFTSpeed);
+          analogWrite(RIGHT_PWM, RIGHTSpeed);
+        }
+        break;
+      case 'S':
+      case 's': // Stop
+        stopmotor();
+        autotraceEnabled = false;
+        break;
+    }
+    
+  }
+  if (BT.available()) {
+    command = BT.read();
+    Serial.print(command);    
+    
+    // Check the command type and adjust the motor speeds accordingly
+    switch (command) {// Move auto
+      case 'T':
+      case 't':
+        autotraceEnabled = true;
+        break;
+      case 'F':
+        forward();
+        delay(300);
+        stopmotor();
+        break;
+      case 'f': // Move forward
+        forward();
+        delay(300);
+        stopmotor();
+        break;
+      case 'B':
+        backward();
+        delay(300);
+        stopmotor();
+        break;
+      case 'b': // Move backward
+        backward();
+        delay(300);
+        stopmotor();
+        break;
+      case 'L':
+        turnleft();
+        delay(300);
+        stopmotor();
+        break;
+      case 'l': // Turn left
+        turnleft();
+        delay(300);
+        stopmotor();
+        break;
+      case 'R':
+        turnright();
+        delay(300);
+        stopmotor();
+        break;
+      case 'r': // Turn right
+        turnright();
+        delay(300);
+        stopmotor();
+        break;
+      case 'A':
+      case 'a': // Increase speed
+        if (RIGHTSpeed+ADJUST <= MAX_SPEED && LEFTSpeed+ADJUST <= MAX_SPEED) {
+          RIGHTSpeed += ADJUST;  
+          LEFTSpeed += ADJUST;
+          analogWrite(LEFT_PWM, LEFTSpeed);
+          analogWrite(RIGHT_PWM, RIGHTSpeed);
+        } else {
+          RIGHTSpeed = RIGHTSpeed;
+          LEFTSpeed = LEFTSpeed;
+          analogWrite(LEFT_PWM, LEFTSpeed);
+          analogWrite(RIGHT_PWM, RIGHTSpeed);
+        }
+        break;
+      case 'M':
+      case 'm': // Decrease speed
+        if (RIGHTSpeed-ADJUST >= MIN_SPEED && LEFTSpeed-ADJUST >= MIN_SPEED) {
+          RIGHTSpeed -= ADJUST;
+          LEFTSpeed -= ADJUST;
+          analogWrite(LEFT_PWM, LEFTSpeed);
+          analogWrite(RIGHT_PWM, RIGHTSpeed);
+        } else {
+          RIGHTSpeed = RIGHTSpeed;
+          LEFTSpeed = LEFTSpeed;
+          analogWrite(LEFT_PWM, LEFTSpeed);
+          analogWrite(RIGHT_PWM, RIGHTSpeed);
+        }
+        break;
+      case 'S':
+      case 's': // Stop
+        stopmotor();
+        autotraceEnabled = false;
+        break;
+    }
+  }
+  
+  Serial.print("\n");
+  Serial.print("rightIR : ");
+  Serial.print(rightIR);
+  Serial.print("\t");
+  Serial.print("RIR_Default : ");
+  Serial.print(RIR_Default);
+  Serial.print("\t");
+  Serial.print("leftIR : ");
+  Serial.print(leftIR);
+  Serial.print("\t");
+  Serial.print("LIR_Default : ");
+  Serial.print(LIR_Default);
+  Serial.print("\t");
+  Serial.print("Rightspeed : ");
+  Serial.print(RIGHTSpeed);
+  Serial.print("\t");
+  Serial.print("Leftspeed : ");
+  Serial.print(LEFTSpeed);
+  Serial.print("\t");
+}
