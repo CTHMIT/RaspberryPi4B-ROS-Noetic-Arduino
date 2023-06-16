@@ -1,0 +1,32 @@
+#include <DHT.h>
+#include <DHT_U.h>
+
+#define DHTpin A0
+#define DHTtype DHT11
+DHT dht(DHTpin, DHTtype);
+
+void setup() {
+  Serial.begin (9600);
+  Serial.println("DHT Humidity & temperature Sensor \n\n");
+  dht.begin();
+}
+void loop() {
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+  float f = dht.readTemperature(true);
+  if (Serial.available()>0) {
+    String data = Serial.readStringUntil('\n');
+    
+    Serial.print("Pi4B sent : ");
+    Serial.println(data);
+    Serial.print("Arduino sent : ");
+    Serial.print("Humidity : ");
+    Serial.print(h);
+    Serial.print("%\t");
+    Serial.print("Temperature : ");
+    Serial.print(t);
+    Serial.print("C\t");
+    Serial.println();
+    
+  }
+}
