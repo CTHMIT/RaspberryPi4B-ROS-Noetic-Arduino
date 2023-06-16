@@ -1,0 +1,260 @@
+// After preparing the Debian system, install the following libraries in advance (some may not be needed, follow the requirements):
+
+sudo pip3 install defusedxml
+sudo pip3 install rospkg
+sudo pip3 install netifaces
+sudo pip3 install empy
+sudo apt install libboost1.74-all-dev
+sudo apt install liblog4cxx11
+sudo apt install liblog4cxx-dev
+sudo apt install libtinyxml2-8
+sudo apt install libtinyxml2-dev
+sudo apt install libtinyxml-dev libtinyxml-doc
+sudo apt install ogre-1.12-tools
+sudo apt install assimp-utils
+sudo apt install libyaml-cpp0.6
+sudo apt install libyaml-dev
+sudo apt install libyaml-cpp-dev
+sudo apt install libpoco-doc libpoco-dev
+sudo apt install libpocofoundation70
+sudo apt install liburdfdom-tools
+sudo apt install liburdffdom-headers-dev
+sudo apt install liburdfdom-dev
+sudo apt install python3-pyassimp libassimp-dev
+sudo apt install libcollada-dom2.4-dp-dev
+sudo apt install python3-sip python3-sip-dev  python3-sip-dbg
+sudo apt install liblz4-dev
+sudo apt install libogre-1.8-dev
+
+sudo apt install libyaml-cpp0.3-dev
+sudo apt install python3-netifaces python3-defusedxml ---> "roscore <package name>"
+
+git clone --recursive https://github.com/ros/console_bridge.git
+sudo mv console_bridge /opt
+cd /opt
+sudo chmod -R 777 console_bridge
+cd console_bridge
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARE_LIBS=ON
+make -j4 && sudo make install
+// or sudo apt install libconsole-bridge0.4 libconsole-bridge-dev -y
+
+sudo pip3 install pycrypto
+sudo pip3 install pycryptodomex
+sudo pip3 install gnupg
+
+sudo apt install qtcreator
+sudo apt install python3-pyqt5 pyqt5-dev python3-sip-dev pyqt5-dev-tools
+sudo pip3 install wheel
+sudo pip3 install sip sip-dev
+sudo pip3 install -v  pyqt5==5.15.2  -i https://mirror.baidu.com/pypi/simple 
+
+sudo pip3 install pybind11 -i https://mirror.baidu.com/pypi/simple 
+sudo apt install libopencv-dev
+sudo apt install libgtest-dev -y
+sudo apt install libuvc-dev
+sudo apt install libeigen3-dev
+sudo apt install liborocos-kdl-dev	
+sudo apt install libcurl4-openssl-dev
+sudo apt install libbullet-dev
+sudo apt install libbz2-dev
+sudo apt install liblzma-dev
+sudo apt install libgpgme-dev
+sudo apt install libpcl-dev
+sudo apt install libgazebo9-dev
+sudo apt install jskeus-dev
+	
+sudo apt install openssl-devel
+sudo apt install python3-gpgme
+sudo apt install gpgme-devel
+
+// Download ROS1 (noetic) source code
+
+// Create a new file directory and download the source code in this directory
+// For example, create a folder: mkdir -p ~/ros_noetic/src
+// cd ~/ros_noetic/src
+// Open the terminal, enter the following command, and download the ros (noetic) source code link (some are optional, you can choose)
+
+git clone --recursive https://github.com/ros/actionlib.git
+git clone -b 1.9.13 --recursive https://github.com/ros/angles.git
+git clone --recursive https://github.com/ros/bond_core.git
+git clone --recursive https://github.com/ros/catkin.git
+git clone -b noetic-devel --recursive https://github.com/ros/class_loader.git
+git clone --recursive https://github.com/ros/cmake_modules.git
+git clone --recursive https://github.com/ros/common_msgs.git
+git clone --recursive https://github.com/ros/common_tutorials.git
+git clone -b 1.5.2 --recursive https://github.com/ros-controls/control_msgs.git
+git clone --recursive https://github.com/ros/diagnostics.git
+git clone --recursive https://github.com/ros/dynamic_reconfigure.git
+git clone --recursive https://github.com/ros/executive_smach.git
+git clone -b noetic-devel --recursive https://github.com/ros/filters.git
+git clone -b noetic-devel --recursive https://github.com/ros/gencpp.git
+git clone --recursive https://github.com/jsk-ros-pkg/geneus.git
+git clone --recursive https://github.com/ros/genlisp.git
+git clone -b noetic-devel --recursive https://github.com/ros/genmsg.git
+git clone -b chris-smith-version-bump --recursive https://github.com/RethinkRobotics-opensource/gennodejs.git
+git clone --recursive https://github.com/ros/genpy.git
+
+git clone --recursive https://github.com/ros/geometry.git
+git clone --recursive https://github.com/ros/geometry2.git
+git clone --recursive https://github.com/ros/geometry_tutorials.git
+git clone --recursive https://github.com/ros-visualization/gl_dependency.git
+
+git clone --recursive https://github.com/ros/ros.git
+git clone --recursive https://github.com/ros/rosdistro.git
+
+git clone --recursive https://github.com/ros/kdl_parser.git
+
+git clone --recursive https://github.com/ros/ros_comm.git
+git clone --recursive https://github.com/ros/joint_state_publisher.git
+git clone --recursive https://github.com/ros/meta-ros.git
+
+git clone --recursive https://github.com/ros/pluginlib.git
+git clone --recursive https://github.com/ros/ros_environment.git
+git clone --recursive https://github.com/ros/urdf_parser_py.git
+git clone --recursive https://github.com/ros/urdfdom_headers.git
+git clone --recursive https://github.com/ros/ros_tutorials.git
+git clone -b noetic-devel --recursive https://github.com/ros/robot_state_publisher.git
+git clone --recursive https://github.com/ros/rosbag_snapshot.git
+git clone --recursive https://github.com/ros/rosconsole.git
+git clone --recursive https://github.com/ros/urdfdom.git
+
+git clone --recursive https://github.com/ros/ros-overlay.git
+git clone --recursive https://github.com/ros/roslint.git
+git clone --recursive https://github.com/ros/xacro.git
+
+git clone --recursive https://github.com/ros/urdf.git
+
+git clone --recursive https://github.com/ros/nodelet_core.git
+git clone --recursive https://github.com/ros/roscpp_core.git
+git clone --recursive https://github.com/ros/meta-ros-webos.git
+git clone --recursive https://github.com/ros/urdf_tutorial.git
+git clone --recursive https://github.com/ros/urdf_sim_tutorial.git
+
+git clone --recursive https://github.com/ros/ros_comm_msgs.git
+git clone --recursive https://github.com/ros/roslisp_common.git
+git clone --recursive https://github.com/ros/solidworks_urdf_exporter.git
+git clone --recursive https://github.com/ros/collada_urdf.git
+git clone --recursive https://github.com/ros/std_msgs.git
+git clone --recursive https://github.com/ros/catkin_tutorials.git
+git clone --recursive https://github.com/ros/ros_realtime.git
+git clone --recursive https://github.com/ros/eigen_stl_containers.git
+git clone --recursive https://github.com/ros/rospack.git
+git clone --recursive https://github.com/ros/homebrew-deps.git
+git clone --recursive https://github.com/ros/rosconsole_bridge.git
+git clone --recursive https://github.com/ros/roslisp.git
+git clone -b noetic-devel --recursive https://github.com/ros/metapackages.git
+git clone --recursive https://github.com/ros/ivcon.git
+git clone --recursive https://github.com/ros/convex_decomposition.git
+git clone --recursive https://github.com/ros/message_generation.git
+git clone --recursive https://github.com/ros/message_runtime.git
+
+git clone --recursive https://github.com/ros/cheatsheet.git
+git clone --recursive https://github.com/ros/rosbag_image_compressor.git
+git clone --recursive https://github.com/ros-visualization/rqt.git
+git clone --recursive https://github.com/ros-visualization/rqt_action.git
+git clone --recursive https://github.com/ros-visualization/rqt_bag.git
+git clone --recursive https://github.com/ros-visualization/rqt_common_plugins.git
+git clone --recursive https://github.com/ros-visualization/rqt_console.git
+git clone --recursive https://github.com/ros-visualization/rqt_dep.git
+git clone --recursive https://github.com/ros-visualization/rqt_graph.git
+git clone --recursive https://github.com/ros-visualization/rqt_image_view.git
+git clone --recursive https://github.com/ros-visualization/rqt_launch.git
+git clone --recursive https://github.com/ros-visualization/rqt_logger_level.git
+git clone --recursive https://github.com/ros-visualization/rqt_moveit.git
+git clone --recursive https://github.com/ros-visualization/rqt_msg.git
+git clone --recursive https://github.com/ros-visualization/rqt_nav_view.git
+git clone --recursive https://github.com/ros-visualization/rqt_publisher.git
+git clone --recursive https://github.com/ros-visualization/rqt_py_console.git
+git clone --recursive https://github.com/ros-visualization/rqt_reconfigure.git
+git clone --recursive https://github.com/ros-visualization/rqt_robot_dashboard.git
+git clone --recursive https://github.com/ros-visualization/rqt_robot_monitor.git
+git clone --recursive https://github.com/ros-visualization/rqt_robot_plugins.git
+git clone --recursive https://github.com/ros-visualization/rqt_robot_steering.git
+git clone --recursive https://github.com/ros-visualization/rqt_runtime_monitor.git
+git clone -b melodic-devel --recursive https://github.com/ros-visualization/rqt_rviz.git
+git clone --recursive https://github.com/ros-visualization/rqt_service_caller.git
+git clone --recursive https://github.com/ros-visualization/rqt_shell.git
+git clone --recursive https://github.com/ros-visualization/rqt_srv.git
+git clone --recursive https://github.com/ros-visualization/rqt_tf_tree.git
+git clone --recursive https://github.com/ros-visualization/rqt_top.git
+git clone --recursive https://github.com/ros-visualization/rqt_topic.git
+git clone --recursive https://github.com/ros-visualization/rqt_web.git
+git clone --recursive https://github.com/ros-visualization/rqt_plot.git
+git clone --recursive https://github.com/ros-visualization/rqt_pose_view.git
+git clone --recursive https://github.com/ros-visualization/rviz.git
+git clone --recursive https://github.com/ros-visualization/visualization_tutorials.git
+git clone --recursive https://github.com/ros-visualization/executive_smach_visualization.git
+git clone -b melodic-devel --recursive https://github.com/ros-visualization/qt_gui_core.git
+git clone -b melodic-devel --recursive https://github.com/ros-visualization/python_qt_binding.git
+git clone --recursive https://github.com/ros-visualization/interactive_markers.git
+
+git clone -b 1.2.2 --recursive https://github.com/ros-visualization/interactive_marker_twist_server.git
+git clone --recursive https://github.com/ros-visualization/qwt_dependency.git
+git clone -b noetic-devel --recursive https://github.com/ros-visualization/rviz_animated_view_controller.git
+git clone -b noetic-devel --recursive https://github.com/ros-visualization/view_controller_msgs.git
+git clone --recursive https://github.com/ros-visualization/gl_dependency.git
+
+git clone -b noetic --recursive https://github.com/ros-perception/vision_opencv.git
+git clone --recursive https://github.com/ros-visualization/webkit_dependency.git
+git clone --recursive https://github.com/ros/rosbag_migration_rule.git
+git clone --recursive https://github.com/ros-perception/image_common.git
+git clone --recursive https://github.com/ros-perception/laser_geometry.git
+git clone --recursive https://github.com/ros/media_export.git
+git clone --recursive https://github.com/ros-planning/navigation_msgs.git
+git clone --recursive https://github.com/ros/resource_retriever.git
+
+git clone --recursive https://github.com/ros-drivers/libuvc_ros.git
+git clone --recursive https://github.com/ros-perception/pcl_msgs.git
+git clone --recursive https://github.com/ros-perception/image_pipeline.git
+git clone -b melodic-devel --recursive https://github.com/ros-perception/perception_pcl.git
+git clone -b 1.4.1 --recursive https://github.com/ros-perception/pointcloud_to_laserscan.git
+git clone --recursive https://github.com/ros-perception/depthimage_to_laserscan.git
+git clone --recursive https://github.com/ros-perception/slam_gmapping.git
+git clone -b noetic-devel --recursive https://github.com/ros-perception/image_transport_plugins.git
+git clone --recursive https://github.com/ros-perception/imu_pipeline.git
+git clone -b noetic-devel --recursive https://github.com/ros-perception/laser_filters.git
+git clone -b noetic-devel --recursive https://github.com/ros-perception/laser_assembler.git
+git clone --recursive https://github.com/ros-perception/vision_msgs.git
+git clone -b noetic-devel --recursive https://github.com/ros-perception/calibration.git
+git clone --recursive https://github.com/jsk-ros-pkg/jsk_roseus.git
+git clone --recursive https://github.com/ros-perception/image_common.git
+git clone --recursive https://github.com/ros/roslisp_common.git
+
+git clone --recursive https://github.com/ros-simulation/gazebo_ros_pkgs.git
+
+git clone --recursive https://github.com/libjpeg-turbo/libjpeg-turbo.git
+git clone -b noetic-devel --recursive https://github.com/ros-visualization/view_controller_msgs.git
+git clone --recursive https://github.com/rdiankov/collada-dom.git
+git clone --recursive https://github.com/tork-a/euslisp-release.git
+git clone -b melodic-devel  --recursive https://github.com/ros-controls/control_toolbox.git
+git clone -b noetic-devel --recursive https://github.com/ros-controls/ros_control.git
+git clone -b noetic-devel --recursive https://github.com/ros-controls/ros_controllers.git	
+git clone -b noetic-devel --recursive https://github.com/ros-controls/realtime_tools.git
+git clone --recursive https://github.com/ros-drivers/four_wheel_steering_msgs.git
+git clone -b kinetic-devel  --recursive https://github.com/ros-controls/urdf_geometry_parser.git
+
+// Note: Among them, jsk_roseus and euslisp-release are finally compiled separately
+// Compile :
+// Enter the following command in the terminal:
+//  ./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release -j2
+
+// During the compilation process, you will encounter some problems, which can be analyzed and solved by yourself.
+// Download the compilation tool (optional)
+// The following commands are used for compilation and installed on demand
+sudo apt-get install build-essential cmake pkg-config
+// Install linusb
+sudo apt-get install libusb-1.0-0-dev
+// Install turboJPEG
+sudo apt-get install libturbojpeg libjpeg-turbo8-dev
+// Install OPENNI2
+sudo apt-get install libglfw3-dev
+// Install OPENCL
+sudo apt-get install libopenni2-dev
+sudo apt-get install libturbojpeg0-dev
+
+// ROSSerial setting change:
+clone https://github.com/ros-drivers/rosserial.git -b noetic-devel
+/home/pi/ros_catkin_ws/src/rosserial/rosserial_python/nodes/
+>>>    port_name = rospy.get_param('~port','/dev/ttyACM0')
+>>>    baud = int(rospy.get_param('~baud','9600'))
