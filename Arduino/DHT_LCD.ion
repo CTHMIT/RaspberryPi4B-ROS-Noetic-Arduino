@@ -1,0 +1,107 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);  
+
+int pin = A3;
+static const uint8_t DHT11 = 11;
+int displayRate = 1;
+
+void sendStartSignal() {
+  pinMode(pin, OUTPUT);
+  digitalWrite(pin, HIGH);
+  delayMicroseconds(1);
+  digitalWrite(pin, LOW);
+  delay(18);
+  pinMode(pin, INPUT);
+}
+
+bool checkResponse() {
+  delayMicroseconds(40);
+  if (digitalRead(pin) == LOW) {
+    delayMicroseconds(80);
+    if (digitalRead(pin) == HIGH) {
+      delayMicroseconds(80);
+      return true;
+    }
+  }
+  return false;
+}
+
+byte readByte() {
+  byte value = 0;
+  for (int i = 7; i >= 0; i--) {
+    while (digitalRead(pin) == LOW);
+    delayMicroseconds(30);
+    if (digitalRead(pin) == HIGH) {
+      value |= (1 << i);
+    }
+    while (digitalRead(pin) == HIGH);
+  }
+  return value;
+}
+
+void readData(byte& humidity, byte& temperature) {
+  byte data[5] = {0};
+
+  sendStartSignal();
+
+  if (checkResponse()) {
+    for (int i = 0; i < 5; i++) {
+      data[i] = readByte();
+    }
+  }
+
+  humidity = data[0];
+  temperature = data[2];
+}
+
+float calculateTemperature(byte temperature) {
+  return static_cast<float>(temperature);
+}
+
+float calculateHumidity(byte humidity) {
+  return static_cast<float>(humidity);
+}
+
+void setup() {
+  lcd.begin(16, 2);  
+  lcd.init();
+  lcd.backlight();
+  Serial.begin(9600);
+  
+}
+float temp,  humi;
+void loop() {
+  byte humidity, temperature;
+  float tempC, humidityPct;
+  readData(humidity, temperature);
+  if (humidity != 0 | temperature != 0){
+    tempC = calculateTemperature(temperature);
+    humidityPct = calculateHumidity(humidity);
+    temp = tempC;
+    humi = humidityPct;
+  } else {  
+    tempC = temp;
+    humidityPct = humi;
+  }
+
+  lcd.setCursor(0, 0);
+  lcd.print("Humidity: ");
+  lcd.print(humidityPct, 2);
+  lcd.print("%");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Temp:     ");
+  lcd.print(tempC, 2);
+  lcd.print("C");
+
+  Serial.print("Humidity: ");
+  Serial.print(humidityPct);
+  Serial.print("%  Temperature: ");
+  Serial.print(tempC);
+  Serial.println("C");
+
+  int displayInterval = 1000 / displayRate;
+  delay(displayInterval);
+}
