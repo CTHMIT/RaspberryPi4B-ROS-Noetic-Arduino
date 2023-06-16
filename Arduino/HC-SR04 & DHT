@@ -1,0 +1,68 @@
+#include <DHT.h>
+#include <DHT_U.h>
+
+
+#define DHTpin A0
+#define DHTtype DHT11
+
+DHT dht(DHTpin, DHTtype);
+
+int trigPin = 12;    
+int echoPin = 13;    
+int blink = 7;
+long duration, cm, inches;
+int threshold_h = 70.00;
+int threshold_dist = 10;
+ 
+void setup() {
+  //Serial Port begin
+  Serial.begin (9600);
+  Serial.println("DHT Humidity & temperature Sensor \n\n");
+  delay(1000);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(blink, OUTPUT);
+  dht.begin();
+}
+ 
+void loop() {
+  delay(2000);
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+  float f = dht.readTemperature(true);
+ 
+  Serial.print("Humidity : ");
+  Serial.print(h);
+  Serial.print("%\t");
+  Serial.print("Temperature");
+  Serial.print(t);
+  Serial.print("*C\t");
+  Serial.print(f);
+  Serial.print("*F\n");
+  Serial.println();
+  
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(5);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(trigPin, LOW);
+  
+  pinMode(echoPin, INPUT);
+  duration = pulseIn(echoPin, HIGH);
+ 
+  cm = (duration/2) / 29.1;     // Divide by 29.1 or multiply by 0.0343
+  inches = (duration/2) / 74;   // Divide by 74 or multiply by 0.0135
+  
+  Serial.print(inches);
+  Serial.print(" in, ");
+  Serial.print(cm);
+  Serial.print(" cm");
+  Serial.println();
+  
+  if  (cm < threshold_dist || h > threshold_h) {
+    digitalWrite(7, HIGH);
+  } else {
+    digitalWrite(7, LOW);
+  }
+  delay(100);
+}
