@@ -11,6 +11,8 @@ In object_detecter.py :
   - rospy.Subscriber("feedback"), String, callback)
 
 will Set the connection and Serial baud
-![image](https://github.com/CTHMIT/RaspberryPi4B-ROS-Noetic-Arduino/assets/107465888/e8e13d2a-3f7b-4127-9b07-c33ab22048e5)
+![image](https://github.com/CTHMIT/RaspberryPi4B-ROS-Noetic-Arduino/assets/107465888/3485f5e7-4dfe-45a9-8fbb-c304cdac3a23)
+
 ## When the Car tracing object can send the command to the car
-![image](https://github.com/CTHMIT/RaspberryPi4B-ROS-Noetic-Arduino/assets/107465888/0bf89b15-0075-4e8a-850a-436e56a55f37)
+![image](https://github.com/CTHMIT/RaspberryPi4B-ROS-Noetic-Arduino/assets/107465888/92870fbc-d7ec-4d48-a3ed-e2ee5c74bbb8)
+
