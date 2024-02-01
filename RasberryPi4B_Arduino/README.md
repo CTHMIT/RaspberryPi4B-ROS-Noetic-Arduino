@@ -22,7 +22,9 @@ unzip coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip -d Sample_TFLite_model
 ```shell
 ls /dev/tty*
 ```
-might see the /dev/ttyACM0 different
+might see the 
+  
+  /dev/ttyACM0 different
 
 ### Set the connection and Serial baud
 In object_detecter.py :
