@@ -1,8 +1,3 @@
-## Test the arduino and pi connection
-```shell
-python3 listener.py
-```
-![image](https://github.com/CTHMIT/RaspberryPi4B-ROS-Noetic-Arduino/assets/107465888/0cabb768-d70f-4ab6-befe-2bacbda792c3)
 
 ### Set the connection and Serial baud
 In object_detecter.py :
