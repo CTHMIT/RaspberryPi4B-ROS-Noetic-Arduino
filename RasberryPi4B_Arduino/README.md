@@ -1,3 +1,10 @@
+## Run the roscore on the other terminal
+```shel
+roscore
+```
+![image](https://github.com/CTHMIT/RaspberryPi4B-ROS-Noetic-Arduino/assets/107465888/f91a5bcd-c1bc-4054-98a4-3bebd150a44c)
+
+
 ## Check Raspberry Pi 4 model b camera
 ``` shell
 vcgencmd get_camera
