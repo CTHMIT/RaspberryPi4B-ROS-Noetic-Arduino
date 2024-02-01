@@ -7,7 +7,7 @@ def callback(data):
     
 def checker():
 
-    rospy.init_node('cmd_check', anonymous=True)
+    rospy.init_node('listener', anonymous=True)
 
     rospy.Subscriber("feedback", String, callback)
 
